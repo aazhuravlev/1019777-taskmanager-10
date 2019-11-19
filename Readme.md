@@ -1,7 +1,7 @@
 # Личный проект «Менеджер задач» [![Build status][travis-image]][travis-url]
 
 * Студент: [Александр Журавлев](https://up.htmlacademy.ru/ecmascript/10/user/1019777).
-* Наставник: `Неизвестно`.
+* Наставник: [Andrey Karyakin](https://htmlacademy.ru/profile/id133011).
 
 ---
 
