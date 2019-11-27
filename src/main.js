@@ -11,6 +11,7 @@ const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
+/*
 const renderHtmlParts = (quantity, template) => {
   const arr = [];
   let fragment = document.createDocumentFragment();
@@ -20,6 +21,7 @@ const renderHtmlParts = (quantity, template) => {
   fragment = arr.join(``);
   return fragment;
 };
+*/
 
 const pasteElements = () => {
   const siteMainElement = document.querySelector(`.main`);
@@ -32,7 +34,7 @@ const pasteElements = () => {
   const taskListElement = siteMainElement.querySelector(`.board__tasks`);
   render(taskListElement, createTaskEditTemplate(), `beforeend`);
 
-  render(taskListElement, renderHtmlParts(TASK_COUNT, createTaskTemplate()), `beforeend`);
+  render(taskListElement, createTaskTemplate().repeat(TASK_COUNT), `beforeend`);
 
   const boardElement = siteMainElement.querySelector(`.board`);
   render(boardElement, createLoadMoreButtonTemplate(), `beforeend`);
