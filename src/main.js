@@ -38,8 +38,6 @@ var loadMoreButtonClickHandler = (node, btn) => {
 
     tasks.slice(prevTasksCount, showingTasksCount)
       .forEach((task) => render(node, createTaskTemplate(task), `beforeend`));
-      console.log(showingTasksCount);
-      console.log(tasks.length);
 
       if (showingTasksCount >= tasks.length) {
       btn.remove();
