@@ -29,7 +29,7 @@ const renderHtmlParts = (quantity, template) => {
 };
 */
 
-var loadMoreButtonClickHandler = (node, btn) => {
+const loadMoreButtonClickHandler = (node, btn) => {
   let showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
 
   return () => {
@@ -39,11 +39,11 @@ var loadMoreButtonClickHandler = (node, btn) => {
     tasks.slice(prevTasksCount, showingTasksCount)
       .forEach((task) => render(node, createTaskTemplate(task), `beforeend`));
 
-      if (showingTasksCount >= tasks.length) {
+    if (showingTasksCount >= tasks.length) {
       btn.remove();
     }
-  }
-}
+  };
+};
 
 const pasteElements = () => {
   const siteMainElement = document.querySelector(`.main`);

@@ -65,9 +65,9 @@ const createHashtags = (tags) => {
             delete
           </button>
         </span>`
-        );
-      })
-      .join(`\n`);
+      );
+    })
+    .join(`\n`);
 };
 
 const createTaskEditTemplate = (task) => {
@@ -111,33 +111,33 @@ const createTaskEditTemplate = (task) => {
                 </button>
 
                 ${
-                  isDateShowing ?
-                    `<fieldset class="card__date-deadline">
-                      <label class="card__input-deadline-wrap">
-                        <input
-                        class="card__date"
-                        type="text"
-                        placeholder=""
-                        name="date"
-                        value="${date} ${time}"/>
-                       </label>
-                    </fieldset>`
-                  : ``
-                }
+    isDateShowing ?
+      `<fieldset class="card__date-deadline">
+        <label class="card__input-deadline-wrap">
+          <input
+          class="card__date"
+          type="text"
+          placeholder=""
+          name="date"
+          value="${date} ${time}"/>
+         </label>
+      </fieldset>`
+      : ``
+    }
 
                 <button class="card__repeat-toggle" type="button">
                   repeat:<span class="card__repeat-status">${isRepeatingTask ? `yes` : `no`}</span>
                 </button>
 
                 ${
-                  isRepeatingTask ?
-                    `<fieldset class="card__repeat-days">
-                        <div class="card__repeat-days-inner">
-                          ${repeatingDaysMarkup}
-                        </div>
-                      </fieldset>`
-                    : ``
-                }
+    isRepeatingTask ?
+      `<fieldset class="card__repeat-days">
+          <div class="card__repeat-days-inner">
+            ${repeatingDaysMarkup}
+          </div>
+        </fieldset>`
+      : ``
+    }
                 </div>
                 <div class="card__hashtag">
                   <div class="card__hashtag-list">
@@ -167,7 +167,7 @@ const createTaskEditTemplate = (task) => {
             </div>
           </form>
         </article>`
-      );
+  );
 };
 
 export {createTaskEditTemplate};
