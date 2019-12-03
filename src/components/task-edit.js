@@ -26,7 +26,6 @@ const createColorsMarkup = (colors, currentColor) => {
 const createRepeatingDaysMarkup = (days, repeatingDays) => {
   return days
     .map((day) => {
-      const isChecked = repeatingDays[day];
       return (
         `<input
           class="visually-hidden card__repeat-day-input"
@@ -34,7 +33,7 @@ const createRepeatingDaysMarkup = (days, repeatingDays) => {
           id="repeat-${day}-4"
           name="repeat"
           value="${day}"
-          ${isChecked ? `checked` : ``}
+          ${repeatingDays[day] ? `checked` : ``}
         />
         <label class="card__repeat-day" for="repeat-${day}-4"
           >${day}</label
@@ -52,15 +51,15 @@ const createHashtags = (tags) => {
           <input
             type="hidden"
             name="hashtag"
-            value=${tag}
+            value="${tag}"
             class="card__hashtag-hidden-input"
           />
           <p class="card__hashtag-name">
             #${tag}
           </p>
           <button
-          type="button"
-              class="card__hashtag-delete"
+            type="button"
+            class="card__hashtag-delete"
           >
             delete
           </button>
@@ -68,6 +67,31 @@ const createHashtags = (tags) => {
       );
     })
     .join(`\n`);
+};
+
+const setdateShowing = (dateFlag, date, time) => {
+  return dateFlag ?
+    `<fieldset class="card__date-deadline">
+      <label class="card__input-deadline-wrap">
+        <input
+        class="card__date"
+        type="text"
+        placeholder=""
+        name="date"
+        value="${date} ${time}"/>
+       </label>
+    </fieldset>` :
+    ``;
+};
+
+const setRepeatingTask = (repeatingTaskFlag, markup) => {
+  return repeatingTaskFlag ?
+    `<fieldset class="card__repeat-days">
+      <div class="card__repeat-days-inner">
+        ${markup}
+      </div>
+    </fieldset>` :
+    ``;
 };
 
 const createTaskEditTemplate = (task) => {
@@ -109,64 +133,40 @@ const createTaskEditTemplate = (task) => {
                 <button class="card__date-deadline-toggle" type="button">
                   date: <span class="card__date-status">${isDateShowing ? `yes` : `no`}</span>
                 </button>
-
-                ${
-    isDateShowing ?
-      `<fieldset class="card__date-deadline">
-        <label class="card__input-deadline-wrap">
-          <input
-          class="card__date"
-          type="text"
-          placeholder=""
-          name="date"
-          value="${date} ${time}"/>
-         </label>
-      </fieldset>`
-      : ``
-    }
-
-                <button class="card__repeat-toggle" type="button">
-                  repeat:<span class="card__repeat-status">${isRepeatingTask ? `yes` : `no`}</span>
-                </button>
-
-                ${
-    isRepeatingTask ?
-      `<fieldset class="card__repeat-days">
-          <div class="card__repeat-days-inner">
-            ${repeatingDaysMarkup}
-          </div>
-        </fieldset>`
-      : ``
-    }
+                ${setdateShowing(isDateShowing, date, time)}
+              <button class="card__repeat-toggle" type="button">
+                repeat:<span class="card__repeat-status">${isRepeatingTask ? `yes` : `no`}</span>
+              </button>
+                ${setRepeatingTask(isRepeatingTask, repeatingDaysMarkup)}
+              </div>
+              <div class="card__hashtag">
+                <div class="card__hashtag-list">
+                  ${tagsMarkup}
                 </div>
-                <div class="card__hashtag">
-                  <div class="card__hashtag-list">
-                    ${tagsMarkup}
-                  </div>
-                  <label>
-                    <input
-                      type="text"
-                      class="card__hashtag-input"
-                      name="hashtag-input"
-                      placeholder="Type new hashtag here"
-                    />
-                    </label>
-                  </div>
-                </div>
-                <div class="card__colors-inner">
-                  <h3 class="card__colors-title">Color</h3>
-                  <div class="card__colors-wrap">
-                    ${colorsMarkup}
-                  </div>
+                <label>
+                  <input
+                    type="text"
+                    class="card__hashtag-input"
+                    name="hashtag-input"
+                    placeholder="Type new hashtag here"
+                  />
+                  </label>
                 </div>
               </div>
-              <div class="card__status-btns">
-                <button class="card__save" type="submit">save</button>
-                <button class="card__delete" type="button">delete</button>
+              <div class="card__colors-inner">
+                <h3 class="card__colors-title">Color</h3>
+                <div class="card__colors-wrap">
+                  ${colorsMarkup}
+                </div>
               </div>
             </div>
-          </form>
-        </article>`
+            <div class="card__status-btns">
+              <button class="card__save" type="submit">save</button>
+              <button class="card__delete" type="button">delete</button>
+            </div>
+          </div>
+        </form>
+      </article>`
   );
 };
 

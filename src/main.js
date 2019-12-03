@@ -50,7 +50,7 @@ const pasteElements = () => {
   const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
   render(siteHeaderElement, createSiteMenuTemplate(), `beforeend`);
-  render(siteMainElement, createFilterTemplate(filters), `beforeend`);
+  render(siteMainElement, createFilterTemplate(filters, 0), `beforeend`);
   render(siteMainElement, createBoardTemplate(), `beforeend`);
 
   const taskListElement = siteMainElement.querySelector(`.board__tasks`);

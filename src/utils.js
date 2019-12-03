@@ -1,12 +1,13 @@
 const castTimeFormat = (value) => {
-  return value < 10 ? `0${value}` : String(value);
+  return value < 10 ? `${String(value).padStart(2, 0)}` : String(value);
 };
 
 const formatTime = (date) => {
-  const hours = castTimeFormat(date.getHours() % 12);
+  const hour = date.getHours();
+  const hours = castTimeFormat(hour % 12);
   const minutes = castTimeFormat(date.getMinutes());
 
-  const interval = date.getHours() > 11 ? `pm` : `am`;
+  const interval = hour > 11 ? `pm` : `am`;
 
   return `${hours}:${minutes} ${interval}`;
 };
