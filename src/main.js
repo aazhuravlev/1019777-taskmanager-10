@@ -17,10 +17,17 @@ const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
 const filters = generateFilters();
 const tasks = generateTasks(TASK_COUNT);
 
+const createHtmlFragment = (data) => {
+  const fragment = document.createDocumentFragment();
+  data.forEach((task) => {
+    renderTask(fragment, task);
+  });
+  return fragment;
+};
+
 const renderTask = (taskListElement, task) => {
   const taskComponent = new TaskComponent(task);
   const taskEditComponent = new TaskEditComponent(task);
-
   const replaceEditToTask = () => taskListElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
   const replaceTaskToEdit = () => taskListElement.replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
 
@@ -66,19 +73,25 @@ const pasteElements = () => {
 
     const taskListElement = boardComponent.getElement().querySelector(`.board__tasks`);
 
-    tasks.slice(0, SHOWING_TASKS_COUNT_ON_START)
-    .forEach((task) => {
-      renderTask(taskListElement, task);
-    });
+    // tasks.slice(0, SHOWING_TASKS_COUNT_ON_START)
+    // .forEach((task) => {
+
+    //   renderTask(taskListElement, task);
+    // });
+    const tasksOnStart = tasks.slice(0, SHOWING_TASKS_COUNT_ON_START);
+    render(taskListElement, createHtmlFragment(tasksOnStart), RenderPosition.BEFOREEND);
 
     const loadMoreButtonComponent = new LoadMoreButtonComponent();
     let showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
 
     const loadMoreButtonClickHandler = () => {
       const prevTasksCount = showingTasksCount;
-      showingTasksCount = showingTasksCount + SHOWING_TASKS_COUNT_BY_BUTTON;
-      tasks.slice(prevTasksCount, showingTasksCount)
-        .forEach((task) => renderTask(taskListElement, task));
+      showingTasksCount += SHOWING_TASKS_COUNT_BY_BUTTON;
+      const unrenderedTasks = tasks.slice(prevTasksCount, showingTasksCount);
+      render(taskListElement, createHtmlFragment(unrenderedTasks), RenderPosition.BEFOREEND);
+
+      // tasks.slice(prevTasksCount, showingTasksCount)
+      //   .forEach((task) => renderTask(taskListElement, task));
       if (showingTasksCount >= tasks.length) {
         loadMoreButtonComponent.getElement().remove();
         loadMoreButtonComponent.removeElement();
