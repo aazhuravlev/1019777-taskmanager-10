@@ -1,16 +1,16 @@
-const Colors = [`black`, `yellow`, `blue`, `green`, `pink`];
+const COLORS = [`black`, `yellow`, `blue`, `green`, `pink`];
 
-const FilterNames = [
+const FILTER_NAMES = [
   `all`, `overdue`, `today`, `favorites`, `repeating`, `tags`, `archive`
 ];
 
-const DescriptionItems = [
+const DESCRIPTION_ITEMS = [
   `Изучить теорию`,
   `Сделать домашку`,
   `Пройти интенсив на соточку`,
 ];
 
-const DefaultRepeatingDays = {
+const DEFAULT_REPEATING_DAYS = {
   'mo': false,
   'tu': false,
   'we': false,
@@ -20,7 +20,7 @@ const DefaultRepeatingDays = {
   'su': false,
 };
 
-const Tags = [
+const TAGS = [
   `homework`,
   `theory`,
   `practice`,
@@ -28,9 +28,9 @@ const Tags = [
   `keks`
 ];
 
-const Days = [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`];
+const DAYS = [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`];
 
-const MonthNames = [
+const MONTH_NAMES = [
   `January`,
   `February`,
   `March`,
@@ -56,7 +56,7 @@ const getRandomArrayItem = (array) => {
 };
 
 const generateFilters = () => {
-  return FilterNames.map((it) => {
+  return FILTER_NAMES.map((it) => {
     return {
       name: it,
       count: Math.floor(Math.random() * 10),
@@ -75,7 +75,7 @@ const getRandomDate = () => {
 };
 
 const generateRepeatingDays = () => {
-  return Object.assign({}, DefaultRepeatingDays, {
+  return Object.assign({}, DEFAULT_REPEATING_DAYS, {
     'mo': Math.random() > 0.5,
   });
 };
@@ -90,11 +90,11 @@ const generateTask = () => {
   const dueDate = Math.random() > 0.5 ? null : getRandomDate();
 
   return {
-    description: getRandomArrayItem(DescriptionItems),
+    description: getRandomArrayItem(DESCRIPTION_ITEMS),
     dueDate,
-    repeatingDays: dueDate ? DefaultRepeatingDays : generateRepeatingDays(),
-    tags: new Set(generateTags(Tags)),
-    color: getRandomArrayItem(Colors),
+    repeatingDays: dueDate ? DEFAULT_REPEATING_DAYS : generateRepeatingDays(),
+    tags: new Set(generateTags(TAGS)),
+    color: getRandomArrayItem(COLORS),
     isFavorite: Math.random() > 0.5,
     isArchive: Math.random() > 0.5,
   };
@@ -106,4 +106,4 @@ const generateTasks = (count) => {
     .map(generateTask);
 };
 
-export {Colors, Days, MonthNames, generateFilters, generateTask, generateTasks};
+export {COLORS, DAYS, MONTH_NAMES, generateFilters, generateTask, generateTasks};
