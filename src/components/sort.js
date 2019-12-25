@@ -6,17 +6,12 @@ export const SortType = {
   DATE_DOWN: [`date-down`, `SORT BY DATE down`]
 };
 
-const SortTypeIndex = {
-  DATA: `0`,
-  NAME: `1`
-};
-
 const generateSortButtons = (sortType) => {
-  const buttons = [];
-  for (const type of Object.keys(sortType)) {
-    buttons.push(`<a href="#" data-sort-type="${SortType[type][SortTypeIndex.DATA]}" class="board__filter">${SortType[type][SortTypeIndex.NAME]}</a>`);
-  }
-  return buttons.join(`\n`);
+  return Object.values(sortType).map(([type, name]) => {
+    return `
+    <a href="#" data-sort-type="${type}" class="board__filter">${name}</a>
+    `;
+  }).join(`\n`);
 };
 
 const createSortTemplate = () => {
