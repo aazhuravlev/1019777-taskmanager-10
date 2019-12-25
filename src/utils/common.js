@@ -15,9 +15,8 @@ const formatTime = (date) => {
 const sortTasks = (data, type) => {
   if (type === `date-up`) {
     return data.slice().sort((a, b) => a.dueDate - b.dueDate);
-  } else {
-    return data.slice().sort((a, b) => b.dueDate - a.dueDate);
   }
+  return data.slice().sort((a, b) => b.dueDate - a.dueDate);
 };
 
 export {formatTime, sortTasks};
