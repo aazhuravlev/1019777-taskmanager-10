@@ -105,16 +105,9 @@ export default class BoardController {
   _onSortTypeChange(sortType) {
     let sortedTasks = [];
 
-    switch (sortType) {
-      case SortType.DATE_UP[0]:
-        sortedTasks = sortTasks(this._tasks, SortType.DATE_UP[0]);
-        break;
-      case SortType.DATE_DOWN[0]:
-        sortedTasks = sortTasks(this._tasks, SortType.DATE_DOWN[0]);
-        break;
-      case SortType.DEFAULT[0]:
-        sortedTasks = this._tasks.slice(0, this._showingTasksCount);
-        break;
+    sortedTasks = sortTasks(this._tasks, sortType);
+    if (sortType === SortType.DEFAULT[0]) {
+      sortedTasks = this._tasks.slice(0, this._showingTasksCount);
     }
 
     const taskListElement = this._tasksComponent.getElement();
