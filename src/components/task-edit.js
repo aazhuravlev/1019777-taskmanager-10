@@ -188,6 +188,10 @@ export default class TaskEdit extends AbstractSmartComponent {
     this._activeRepeatingDays = Object.assign({}, task.repeatingDays);
     this._flatpickr = null;
 
+    this.deadlineToggleClickHandler = this.deadlineToggleClickHandler.bind(this);
+    this.repeatToggleClickHandler = this.repeatToggleClickHandler.bind(this);
+    this.repeatDaysChangeHandler = this.repeatDaysChangeHandler.bind(this);
+
     // this._applyFlatpickr();
     this._subscribeOnEvents();
   }
@@ -200,7 +204,7 @@ export default class TaskEdit extends AbstractSmartComponent {
     });
   }
 
-  recoveryListeners() {
+  recoverListeners() {
     this._subscribeOnEvents();
   }
 
@@ -240,27 +244,33 @@ export default class TaskEdit extends AbstractSmartComponent {
     const element = this.getElement();
 
     element.querySelector(`.card__date-deadline-toggle`)
-      .addEventListener(`click`, () => {
-        this._isDateShowing = !this._isDateShowing;
-
-        this.rerender();
-      });
+      .addEventListener(`click`, this.deadlineToggleClickHandler);
 
     element.querySelector(`.card__repeat-toggle`)
-      .addEventListener(`click`, () => {
-        this._isRepeatingTask = !this._isRepeatingTask;
-
-        this.rerender();
-      });
+      .addEventListener(`click`, this.repeatToggleClickHandler);
 
     const repeatDays = element.querySelector(`.card__repeat-days`);
     if (repeatDays) {
-      repeatDays.addEventListener(`change`, (evt) => {
-        this._activeRepeatingDays[evt.target.value] = evt.target.checked;
-
-        this.rerender();
-      });
+      repeatDays.addEventListener(`change`, this.repeatDaysChangeHandler);
     }
+  }
+
+  deadlineToggleClickHandler() {
+    this._isDateShowing = !this._isDateShowing;
+
+    this.rerender();
+  }
+
+  repeatToggleClickHandler() {
+    this._isRepeatingTask = !this._isRepeatingTask;
+
+    this.rerender();
+  }
+
+  repeatDaysChangeHandler(evt) {
+    this._activeRepeatingDays[evt.target.value] = evt.target.checked;
+
+    this.rerender();
   }
 
   setSubmitHandler(handler) {

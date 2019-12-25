@@ -20,6 +20,10 @@ export default class TaskController {
     this._taskEditComponent = null;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
+    this.editButtonClickHandler = this.editButtonClickHandler.bind(this);
+    this.archiveButtonClickHandler = this.archiveButtonClickHandler.bind(this);
+    this.favoritesButtonClickHandler = this.favoritesButtonClickHandler.bind(this);
+    this.taskEditSubmitHandler = this.taskEditSubmitHandler.bind(this);
   }
 
   render(task) {
@@ -29,24 +33,13 @@ export default class TaskController {
     this._taskComponent = new TaskComponent(task);
     this._taskEditComponent = new TaskEditComponent(task);
 
-    this._taskComponent.setEditButtonClickHandler(() => {
-      this._replaceTaskToEdit();
-      document.addEventListener(`keydown`, this._onEscKeyDown);
-    });
+    this._taskComponent.setEditButtonClickHandler(this.editButtonClickHandler);
 
-    this._taskComponent.setArchiveButtonClickHandler(() => {
-      this._onDataChange(this, task, Object.assign({}, task, {
-        isArchive: !task.isArchive,
-      }));
-    });
+    this._taskComponent.setArchiveButtonClickHandler(this.archiveButtonClickHandler(task));
 
-    this._taskComponent.setFavoritesButtonClickHandler(() => {
-      this._onDataChange(this, task, Object.assign({}, task, {
-        isFavorite: !task.isFavorite,
-      }));
-    });
+    this._taskComponent.setFavoritesButtonClickHandler(this.favoritesButtonClickHandler(task));
 
-    this._taskEditComponent.setSubmitHandler(() => this._replaceEditToTask());
+    this._taskEditComponent.setSubmitHandler(this.taskEditSubmitHandler);
 
     if (oldTaskEditComponent && oldTaskComponent) {
       replace(this._taskComponent, oldTaskComponent);
@@ -54,6 +47,31 @@ export default class TaskController {
     } else {
       render(this._container, this._taskComponent.getElement(), RenderPosition.BEFOREEND);
     }
+  }
+
+  editButtonClickHandler() {
+    this._replaceTaskToEdit();
+    document.addEventListener(`keydown`, this._onEscKeyDown);
+  }
+
+  archiveButtonClickHandler(task) {
+    return () => {
+      this._onDataChange(this, task, Object.assign({}, task, {
+        isArchive: !task.isArchive,
+      }));
+    };
+  }
+
+  favoritesButtonClickHandler(task) {
+    return () => {
+      this._onDataChange(this, task, Object.assign({}, task, {
+        isFavorite: !task.isFavorite,
+      }));
+    };
+  }
+
+  taskEditSubmitHandler() {
+    this._replaceEditToTask();
   }
 
   setDefaultView() {
