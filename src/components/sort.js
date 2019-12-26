@@ -9,7 +9,7 @@ export const SortType = {
 const generateSortButtons = (sortType) => {
   return Object.values(sortType).map(([type, name]) => {
     return `
-    <a href="#" data-sort-type="${type}" class="board__filter">${name}</a>
+      <a href="#" data-sort-type="${type}" class="board__filter">${name}</a>
     `;
   }).join(`\n`);
 };
