@@ -23,7 +23,7 @@ const render = (container, component, place) => {
 
 const remove = (component) => {
   component.getElement().remove();
-  component.removeElement();
+  component.clearElement();
 };
 
 const replace = (newComponent, oldComponent) => {

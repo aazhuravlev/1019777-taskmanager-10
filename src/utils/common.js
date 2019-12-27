@@ -1,3 +1,5 @@
+// import moment from 'moment';
+
 const castTimeFormat = (value) => {
   return value < 10 ? `${String(value).padStart(2, 0)}` : String(value);
 };
@@ -12,4 +14,11 @@ const formatTime = (date) => {
   return `${hours}:${minutes} ${interval}`;
 };
 
-export {formatTime};
+const sortTasks = (data, type) => {
+  if (type === `date-up`) {
+    return data.slice().sort((a, b) => a.dueDate - b.dueDate);
+  }
+  return data.slice().sort((a, b) => b.dueDate - a.dueDate);
+};
+
+export {formatTime, sortTasks};
