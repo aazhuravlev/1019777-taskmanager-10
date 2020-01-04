@@ -1,7 +1,6 @@
 import AbstractComponent from './abstract-component.js';
-import {MONTH_NAMES} from '../mock.js';
-import {formatTime} from '../utils/common.js';
-// import {formatTime, formatDate} from '../utils/common.js';
+import {formatTime, formatDate} from '../utils/common.js';
+
 const createHashtagsMarkup = (hashtags) => {
   return hashtags
     .map((hashtag) => {
@@ -33,9 +32,10 @@ const createTaskTemplate = (task) => {
 
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
   const isDateShowing = !!dueDate;
-  const date = isDateShowing ? `${dueDate.getDate()} ${MONTH_NAMES[dueDate.getMonth()]}` : ``;
-  // const date = isDateShowing ? formatDate(dueDate) : ``;
+
+  const date = isDateShowing ? formatDate(dueDate) : ``;
   const time = isDateShowing ? formatTime(dueDate) : ``;
+
   const hashtags = createHashtagsMarkup(Array.from(tags));
   const editButton = createButtonMarkup(`edit`, true);
   const archiveButton = createButtonMarkup(`archive`, task.isArchive);
