@@ -1,17 +1,11 @@
-// import moment from 'moment';
-
-const castTimeFormat = (value) => {
-  return value < 10 ? `${String(value).padStart(2, 0)}` : String(value);
-};
+import moment from 'moment';
 
 const formatTime = (date) => {
-  const hour = date.getHours();
-  const hours = castTimeFormat(hour % 12);
-  const minutes = castTimeFormat(date.getMinutes());
+  return moment(date).format(`hh:mm A`);
+};
 
-  const interval = hour > 11 ? `pm` : `am`;
-
-  return `${hours}:${minutes} ${interval}`;
+const formatDate = (date) => {
+  return moment(date).format(`DD MMMM`);
 };
 
 const sortTasks = (data, type) => {
@@ -21,4 +15,4 @@ const sortTasks = (data, type) => {
   return data.slice().sort((a, b) => b.dueDate - a.dueDate);
 };
 
-export {formatTime, sortTasks};
+export {formatTime, formatDate, sortTasks};
