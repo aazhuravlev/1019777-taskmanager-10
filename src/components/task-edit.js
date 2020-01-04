@@ -1,4 +1,6 @@
 import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/light.css';
 import AbstractSmartComponent from './abstract-smart-component.js';
 import {COLORS, DAYS} from '../mock.js';
 import {formatDate, formatTime} from '../utils/common.js';
@@ -192,6 +194,7 @@ export default class TaskEdit extends AbstractSmartComponent {
     this.repeatToggleClickHandler = this.repeatToggleClickHandler.bind(this);
     this.repeatDaysChangeHandler = this.repeatDaysChangeHandler.bind(this);
 
+    this._applyFlatpickr();
     this._subscribeOnEvents();
   }
 
