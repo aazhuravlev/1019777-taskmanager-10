@@ -1,8 +1,4 @@
-const COLORS = [`black`, `yellow`, `blue`, `green`, `pink`];
-
-const FILTER_NAMES = [
-  `all`, `overdue`, `today`, `favorites`, `repeating`, `tags`, `archive`
-];
+import {FilterNames, COLORS, DAYS, MONTH_NAMES} from './constants.js';
 
 const DESCRIPTION_ITEMS = [
   `Изучить теорию`,
@@ -28,23 +24,6 @@ const TAGS = [
   `keks`
 ];
 
-const DAYS = [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`];
-
-const MONTH_NAMES = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`,
-];
-
 const getRandomIntegerNumber = (min, max) => {
   return min + Math.floor(max * Math.random());
 };
@@ -56,7 +35,7 @@ const getRandomArrayItem = (array) => {
 };
 
 const generateFilters = () => {
-  return FILTER_NAMES.map((it) => {
+  return Object.values(FilterNames).map((it) => {
     return {
       name: it,
       count: Math.floor(Math.random() * 10),
@@ -90,6 +69,7 @@ const generateTask = () => {
   const dueDate = Math.random() > 0.5 ? null : getRandomDate();
 
   return {
+    id: String(new Date() + Math.random()),
     description: getRandomArrayItem(DESCRIPTION_ITEMS),
     dueDate,
     repeatingDays: dueDate ? DEFAULT_REPEATING_DAYS : generateRepeatingDays(),

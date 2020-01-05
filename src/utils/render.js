@@ -10,6 +10,14 @@ const createElement = (template) => {
   return newElement.firstChild;
 };
 
+const createFragment = (arr) => {
+  const fragment = document.createDocumentFragment();
+  for (const element of arr) {
+    fragment.appendChild(element);
+  }
+  return fragment;
+};
+
 const render = (container, component, place) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
@@ -38,4 +46,4 @@ const replace = (newComponent, oldComponent) => {
   }
 };
 
-export {RenderPosition, createElement, render, remove, replace};
+export {RenderPosition, createElement, render, remove, replace, createFragment};
