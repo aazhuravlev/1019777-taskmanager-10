@@ -1,10 +1,11 @@
 import BoardComponent from './components/board.js';
 import BoardController from './controllers/board.js';
 import FilterController from './controllers/filter.js';
-import SiteMenuComponent from './components/site-menu.js';
+import SiteMenuComponent, {MenuItem} from './components/site-menu.js';
+import StatisticsComponent from './components/statistics.js';
 import TasksModel from './models/tasks.js';
 import {generateTasks} from './mock.js';
-import {render, RenderPosition} from './utils/render.js';
+import {render, createFragment, RenderPosition} from './utils/render.js';
 
 const TASK_COUNT = 22;
 
@@ -16,6 +17,7 @@ const pasteElements = () => {
   const siteMainElement = document.querySelector(`.main`);
   const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
   const siteMenuComponent = new SiteMenuComponent();
+  const statisticsComponent = new StatisticsComponent();
 
   render(siteHeaderElement, siteMenuComponent.getElement(), RenderPosition.BEFOREEND);
 
@@ -23,14 +25,30 @@ const pasteElements = () => {
   filterController.render();
 
   const boardComponent = new BoardComponent();
-  render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
+  render(siteMainElement, createFragment([boardComponent.getElement(), statisticsComponent.getElement()]), RenderPosition.BEFOREEND);
 
   const boardController = new BoardController(boardComponent, tasksModel);
+
+  statisticsComponent.hide();
   boardController.render();
 
-  siteMenuComponent.getElement().querySelector(`.control__label--new-task`)
-  .addEventListener(`click`, () => {
-    boardController.createTask();
+  siteMenuComponent.setOnChange((menuItem) => {
+    switch (menuItem) {
+      case MenuItem.NEW_TASK:
+        siteMenuComponent.setActiveItem(MenuItem.TASKS);
+        statisticsComponent.hide();
+        boardController.show();
+        boardController.createTask();
+        break;
+      case MenuItem.STATISTICS:
+        boardController.hide();
+        statisticsComponent.show();
+        break;
+      case MenuItem.TASKS:
+        statisticsComponent.hide();
+        boardController.show();
+        break;
+    }
   });
 };
 
