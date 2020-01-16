@@ -24,17 +24,25 @@ const API = class {
   getTasks() {
     return this._load({url: `tasks`})
       .then((response) => response.json())
-      .then(Tasks.parseTasks);
+      .then(Task.parseTasks);
   }
 
-  createTask(task) {
-  }
+  // createTask(task) {
+  // }
 
   updateTask(id, data) {
+    return this._load({
+      url: `tasks/${id}`,
+      method: Method.PUT,
+      body: JSON.stringify(data.toRAW()),
+      headers: new Headers({'Content-Type': `application/json`})
+    })
+      .then((response) => response.json())
+      .then(Task.parseTask);
   }
 
-  deleteTask(id) {
-  }
+  // deleteTask(id) {
+  // }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);
