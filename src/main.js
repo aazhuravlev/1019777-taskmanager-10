@@ -1,19 +1,19 @@
+import API from './api.js';
 import BoardComponent from './components/board.js';
 import BoardController from './controllers/board.js';
 import FilterController from './controllers/filter.js';
 import SiteMenuComponent, {MenuItem} from './components/site-menu.js';
 import StatisticsComponent from './components/statistics.js';
 import TasksModel from './models/tasks.js';
-import {generateTasks} from './mock.js';
 import {render, createFragment, RenderPosition} from './utils/render.js';
 
-const TASK_COUNT = 22;
+const AUTHORIZATION = `Basic dXNlckBwYZFad28yAo=`;
+const END_POINT = `https://htmlacademy-es-10.appspot.com/task-manager`;
 
-const tasks = generateTasks(TASK_COUNT);
 const tasksModel = new TasksModel();
-tasksModel.setTasks(tasks);
 
 const pasteElements = () => {
+  const api = new API(END_POINT, AUTHORIZATION);
   const siteMainElement = document.querySelector(`.main`);
   const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
   const siteMenuComponent = new SiteMenuComponent();
@@ -34,10 +34,9 @@ const pasteElements = () => {
   const boardComponent = new BoardComponent();
   render(siteMainElement, createFragment([boardComponent.getElement(), statisticsComponent.getElement()]), RenderPosition.BEFOREEND);
 
-  const boardController = new BoardController(boardComponent, tasksModel);
+  const boardController = new BoardController(boardComponent, tasksModel, api);
 
   statisticsComponent.hide();
-  boardController.render();
 
   siteMenuComponent.setOnChange((menuItem) => {
     switch (menuItem) {
@@ -56,6 +55,11 @@ const pasteElements = () => {
         boardController.show();
         break;
     }
+  });
+  api.getTasks()
+  .then((tasks) => {
+    tasksModel.setTasks(tasks);
+    boardController.render();
   });
 };
 

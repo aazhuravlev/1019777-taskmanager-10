@@ -1,7 +1,8 @@
 import TaskComponent from '../components/task.js';
 import TaskEditComponent from '../components/task-edit.js';
+import TaskModel from '../models/task.js';
 import {render, replace, remove, RenderPosition} from '../utils/render.js';
-import {Color, KeyName} from '../constants.js';
+import {Color, DAYS, KeyName} from '../constants.js';
 // import {bindAll} from '../utils/common.js';
 
 const Mode = {
@@ -26,6 +27,27 @@ const EmptyTask = {
   color: Color.BLACK,
   isFavorite: false,
   isArchive: false,
+};
+
+const parseFormData = (formData) => {
+  const date = formData.get(`date`);
+  const repeatingDays = DAYS.reduce((acc, day) => {
+    acc[day] = false;
+    return acc;
+  }, {});
+
+  return new TaskModel({
+    'description': formData.get(`text`),
+    'due_date': date ? new Date(date) : null,
+    'tags': formData.getAll(`hashtag`),
+    'repeating_days': formData.getAll(`repeat`).reduce((acc, it) => {
+      acc[it] = true;
+      return acc;
+    }, repeatingDays),
+    'color': formData.get(`color`),
+    'is_favorite': false,
+    'is_done': false,
+  });
 };
 
 export default class TaskController {
@@ -101,7 +123,10 @@ export default class TaskController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
     this._taskEditComponent.reset();
 
-    replace(this._taskComponent, this._taskEditComponent);
+    if (document.contains(this._taskEditComponent.getElement())) {
+      replace(this._taskComponent, this._taskEditComponent);
+    }
+
     this._mode = Mode.DEFAULT;
   }
 
@@ -129,21 +154,25 @@ export default class TaskController {
   }
 
   archiveButtonClickHandler() {
-    this.dataChangeHandler({isArchive: !this.task.isArchive});
+    this.dataChangeHandler(`isArchive`);
   }
 
   favoritesButtonClickHandler() {
-    this.dataChangeHandler({isFavorite: !this.task.isFavorite});
+    this.dataChangeHandler(`isFavorite`);
   }
 
   taskEditSubmitHandler(evt) {
     evt.preventDefault();
-    const data = this._taskEditComponent.getData();
+    const formData = this._taskEditComponent.getData();
+    const data = parseFormData(formData);
+
     this._onDataChange(this, this.task, data);
   }
 
   dataChangeHandler(property) {
-    this._onDataChange(this, this.task, Object.assign({}, this.task, property));
+    const newTask = TaskModel.clone(this.task);
+    newTask[property] = !newTask[property];
+    this._onDataChange(this, this.task, newTask);
   }
 }
 
