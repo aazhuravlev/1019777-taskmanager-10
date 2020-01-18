@@ -5,6 +5,8 @@ import {render, replace, remove, RenderPosition} from '../utils/render.js';
 import {Color, DAYS, KeyName} from '../constants.js';
 // import {bindAll} from '../utils/common.js';
 
+const SHAKE_ANIMATION_TIMEOUT = 600;
+
 const Mode = {
   ADDING: `adding`,
   DEFAULT: `default`,
@@ -69,6 +71,7 @@ export default class TaskController {
     this.favoritesButtonClickHandler = this.favoritesButtonClickHandler.bind(this);
     this.taskEditSubmitHandler = this.taskEditSubmitHandler.bind(this);
     this.dataChangeHandler = this.dataChangeHandler.bind(this);
+    this.deleteButtonClickHandler = this.deleteButtonClickHandler.bind(this);
   }
 
   render(task, mode) {
@@ -84,7 +87,7 @@ export default class TaskController {
     this._taskComponent.setArchiveButtonClickHandler(this.archiveButtonClickHandler);
     this._taskComponent.setFavoritesButtonClickHandler(this.favoritesButtonClickHandler);
     this._taskEditComponent.setSubmitHandler(this.taskEditSubmitHandler);
-    this._taskEditComponent.setDeleteButtonClickHandler(() => this._onDataChange(this, this.task, null));
+    this._taskEditComponent.setDeleteButtonClickHandler(this.deleteButtonClickHandler);
 
     switch (mode) {
       case Mode.DEFAULT:
@@ -119,6 +122,21 @@ export default class TaskController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
+  shake() {
+    this._taskEditComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    this._taskComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      this._taskEditComponent.getElement().style.animation = ``;
+      this._taskComponent.getElement().style.animation = ``;
+
+      this._taskEditComponent.setData({
+        saveButtonText: `Save`,
+        deleteButtonText: `Delete`,
+      });
+    }, SHAKE_ANIMATION_TIMEOUT);
+  }
+
   _replaceEditToTask() {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
     this._taskEditComponent.reset();
@@ -151,6 +169,14 @@ export default class TaskController {
   editButtonClickHandler() {
     this._replaceTaskToEdit();
     document.addEventListener(`keydown`, this._onEscKeyDown);
+  }
+
+  deleteButtonClickHandler() {
+    this._taskEditComponent.setData({
+      deleteButtonText: `Deleting...`,
+    });
+
+    this._onDataChange(this, this.task, null);
   }
 
   archiveButtonClickHandler() {
